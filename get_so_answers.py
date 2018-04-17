@@ -5,10 +5,10 @@ from time import sleep
 def main():
     with open("so_questions_answers_2017.txt", "a") as fWrite:
         with open("so_questions_2017.txt", "r") as fRead:
-            questionNr = 1
-            # questionNr = 201
-
-            questionMax = questionNr + 200
+            # requestCount = 760 # 840
+            requestCount = 8185
+            questionNr   = 450001
+            questionMax  = questionNr + 50000
 
             # Start from later point in file
             for i in range(questionNr-1):
@@ -19,7 +19,7 @@ def main():
 
             while True:
                 if questionNr >= questionMax:
-                    print("{} questions passed, start again from question {} at page {}.".format(questionNr-1, questionNr, page))
+                    # print("{} questions passed, start again from question {}.".format(questionNr-1, questionNr))
                     break
 
                 questions = []
@@ -49,8 +49,10 @@ def main():
                     while hasmore:
                         # link for id in question
                         response = requests.get("https://api.stackexchange.com/2.2/questions/" + questionIDs + "/answers?key=c0rhJNc*ftoArm1v10Xz7Q((&page=" + str(page) + "&pagesize=100&fromdate=1483228800&todate=1514678400&order=asc&sort=creation&site=stackoverflow&filter=!b1MMEbc8bCJrBX")
+                        requestCount += 1
                         # print("https://api.stackexchange.com/2.2/questions/" + questionIDs + "/answers?key=c0rhJNc*ftoArm1v10Xz7Q((&page=" + str(page) + "&pagesize=100&fromdate=1483228800&todate=1514678400&order=asc&sort=creation&site=stackoverflow&filter=!b1MMEbc8bCJrBX")
-                        print("== Request {:8d} ============================".format(page))
+                        # print("== Request {:8d} ============================".format(page))
+                        print("== Req tot {:8d} ============================".format(requestCount))
                         sleep(1) # For now: sleep one whole second
                         # sleep(0.05) # 50 millisecond wait; 30 requests per second = 33 ms between requests
 
@@ -100,7 +102,8 @@ def main():
 
                         # Add answers to the questions dicts
                         for question in questions:
-                            question["answers"] = []
+                            if not "answers" in question:
+                                question["answers"] = []
                             if "items" in data:
                                 question["answers"].extend([item for item in data["items"] if item["question_id"] == question["question_id"]])
 
@@ -119,8 +122,12 @@ def main():
                         question_and_answer_str = json.dumps(question) # controleren of het een enkele regel is, geen newlines
                         fWrite.write(question_and_answer_str + "\n") # schrijf naar file
 
+                print(quota_remaining)
+
                 if breakFromNestedLoop:
                     break
+
+            print("{} questions passed, start again from question {}.".format(questionNr-1, questionNr))
 
 
 if __name__ == '__main__':
