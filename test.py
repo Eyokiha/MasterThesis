@@ -41,14 +41,16 @@ from statistics import mean
 # Convert human time -> epoch time:
 # import time; int(time.mktime(time.strptime('2000-01-01 12:34:00', '%Y-%m-%d %H:%M:%S'))) - time.timezone
 # Convert epoch time -> human time:
-# import time; time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.localtime(epoch)) Replace time.localtime with time.gmtime for GMT time. Or using datetime: import datetime; datetime.datetime.utcfromtimestamp(epoch).replace(tzinfo=datetime.timezone.utc)
+import time
+# time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.localtime(epoch)) Replace time.localtime with time.gmtime for GMT time. Or using datetime: import datetime; datetime.datetime.utcfromtimestamp(epoch).replace(tzinfo=datetime.timezone.utc)
 
 def percentage(part, whole):
   return 100 * float(part)/float(whole)
 
 
 def main():
-    with open("so_questions_answers_2017 (10th copy).txt", "r") as f:
+    # with open("so_questions_answers_2017 (10th copy).txt", "r") as f:
+    with open("so_questions_answers_2017 - 1000000.txt", "r") as f:
         total       = 0
         answered    = 0
         npython     = 0
@@ -94,6 +96,7 @@ def main():
         JVuserListAnswers = []
         CPuserListAnswers = []
         CCuserListAnswers = []
+        AllUserListAnswers = []
 
         PYuserListQuestions = []
         JSuserListQuestions = []
@@ -101,9 +104,21 @@ def main():
         CPuserListQuestions = []
         CCuserListQuestions = []
 
+
         for line in f:
             item = json.loads(line)
             total += 1
+
+            if item["owner"]["user_type"]=="registered":
+                AllUserListAnswers.append(item["owner"]["user_id"])
+            else:
+                AllUserListAnswers.append("##UNREGISTERED##:"+el["owner"]["display_name"])
+
+            for el in item["answers"]:
+                if el["owner"]["user_type"]=="registered":
+                    AllUserListAnswers.append(el["owner"]["user_id"])
+                else:
+                    AllUserListAnswers.append("##UNREGISTERED##:"+el["owner"]["display_name"])
 
             if item["is_answered"]:
                 answered += 1
@@ -217,6 +232,7 @@ def main():
                                 CCuserListAnswers.append("##UNREGISTERED##:"+el["owner"]["display_name"])
                     # TAuserList = []
                     # ALuserList = []
+            date = time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.localtime(item["creation_date"]))
 
 
 
@@ -234,6 +250,9 @@ def main():
         # print("c: {:6d} {:6.2f}".format(                   nc,          percentage(nc, total)),'%')
         # print("with tags: {:6d} {:6.2f}".format(           n1,          percentage(n1, total)),'%')
         # print("with tags & answered: {:6d} {:6.2f}".format(n2,          percentage(n2, total)),'%')
+
+        print(date)
+        print()
 
         print("total:",                total)
         print("answered:",             answered)
@@ -330,6 +349,9 @@ def main():
         print("Java       - C          ", (200.0 * len(set(JVuserListBoth) & set(CCuserListBoth)) / (len(set(JVuserListBoth)) + len(set(CCuserListBoth)))) )
         print("C++        - C          ", (200.0 * len(set(CPuserListBoth) & set(CCuserListBoth)) / (len(set(CPuserListBoth)) + len(set(CCuserListBoth)))) )
         print()
+
+        print("Tagged:", len(set(PYuserListBoth+JSuserListBoth+JVuserListBoth+CPuserListBoth+CCuserListBoth)))
+        print("Total: ", len(set(AllUserListAnswers)))
 
 
 if __name__ == '__main__':
