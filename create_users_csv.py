@@ -42,8 +42,9 @@ def main():
 
                 for user in userdict:
                     wn.writerow([user
-                                ,userdict[user]["questions"]["reputation"]
-                                ,userdict[user]["questions"]["accept_rate"]
+                                ,userdict[user]["registered"]
+                                ,userdict[user]["reputation"]
+                                ,userdict[user]["accept_rate"]
                                 ,userdict[user]["questions"]["total"]
                                 ,userdict[user]["questions"]["code_blocks"]
                                 ,userdict[user]["questions"]["tag_python"]

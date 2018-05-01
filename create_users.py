@@ -9,8 +9,8 @@ def divide(n, d):
 def newUser(data):
     return {
      "registered":  data["owner"]["user_type"]=="registered",  # registered or unregistered user
-     "accept_rate": data["owner"].get("accept_rate",-1),     # percentage of questions (of the user) with accepted answer
-     "reputation":  data["owner"].get("reputation",-1),      # reputation of user
+     "reputation":  data["owner"].get("reputation",0),         # reputation of user
+     "accept_rate": data["owner"].get("accept_rate",0),        # percentage of questions (of the user) with accepted answer
      "questions": {"total": 0,                    # total nr of questions of user
                    "code_blocks": 0,              # nr of questions that include code blocks
                    "tag_python": 0,               # nr of questions with tag python
