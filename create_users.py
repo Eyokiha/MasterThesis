@@ -85,7 +85,7 @@ def fillUser(item, userdict):
             userdict[user_id]["answers"]["down_votes"].append(answer["down_vote_count"])
             userdict[user_id]["answers"]["up_votes"].append(answer["up_vote_count"])
             userdict[user_id]["answers"]["accepted"]        += int(answer["is_accepted"])
-            userdict[user_id]["answers"]["time"].append(item["creation_date"] - answer["creation_date"])
+            userdict[user_id]["answers"]["time"].append(answer["creation_date"] - item["creation_date"])
             userdict[user_id]["answers"]["questioners"].append(questioner)
 
     return userdict
@@ -120,51 +120,118 @@ def main():
             userdictApr = {}
             userdictMay = {}
             userdictJun = {}
+            userdictPy = {}
+            userdictJs = {}
+            userdictJv = {}
+            userdictCp = {}
+            userdictCc = {}
 
             for line in rf:
                 item  = json.loads(line)
-                userdict = fillUser(item, userdict)
+                # userdict = fillUser(item, userdict)
 
-                month = time.strftime("%b", time.localtime(item["creation_date"]))
-                if month == "Jan":
-                    userdictJan = fillUser(item, userdictJan)
-                if month == "Feb":
-                    userdictFeb = fillUser(item, userdictFeb)
-                if month == "Mar":
-                    userdictMar = fillUser(item, userdictMar)
-                if month == "Apr":
-                    userdictApr = fillUser(item, userdictApr)
-                if month == "May":
-                    userdictMay = fillUser(item, userdictMay)
-                if month == "Jun":
-                    userdictJun = fillUser(item, userdictJun)
+                if "python" in item["tags"]:
+                    userdictPy = fillUser(item, userdictPy)
+                if "javascript" in item["tags"]:
+                    userdictJs = fillUser(item, userdictJs)
+                if "java" in item["tags"]:
+                    userdictJv = fillUser(item, userdictJv)
+                if "c++" in item["tags"]:
+                    userdictCp = fillUser(item, userdictCp)
+                if "c" in item["tags"]:
+                    userdictCc = fillUser(item, userdictCc)
+
+                # month = time.strftime("%b", time.localtime(item["creation_date"]))
+                # if month == "Jan":
+                #     userdictJan = fillUser(item, userdictJan)
+                # if month == "Feb":
+                #     userdictFeb = fillUser(item, userdictFeb)
+                # if month == "Mar":
+                #     userdictMar = fillUser(item, userdictMar)
+                # if month == "Apr":
+                #     userdictApr = fillUser(item, userdictApr)
+                # if month == "May":
+                #     userdictMay = fillUser(item, userdictMay)
+                # if month == "Jun":
+                #     userdictJun = fillUser(item, userdictJun)
                 
             # userdata = json.dumps(userdict)
             # wf.write(userdata)
 
 
-    # with open('dataset_users.txt','r') as rf:
-    #     with open('dataset_users_avgd.txt','w') as wf:
-    #         line = rf.readline()
-    #         userdict = json.loads(line)
+#     # with open('dataset_users.txt','r') as rf:
+#     #     with open('dataset_users_avgd.txt','w') as wf:
+#     #         line = rf.readline()
+#     #         userdict = json.loads(line)
 
-            userdict    = avgUser(userdict)
-            userdictJan = avgUser(userdictJan)
-            userdictFeb = avgUser(userdictFeb)
-            userdictMar = avgUser(userdictMar)
-            userdictApr = avgUser(userdictApr)
-            userdictMay = avgUser(userdictMay)
-            userdictJun = avgUser(userdictJun)
+            # userdict    = avgUser(userdict)
+            # userdictJan = avgUser(userdictJan)
+            # userdictFeb = avgUser(userdictFeb)
+            # userdictMar = avgUser(userdictMar)
+            # userdictApr = avgUser(userdictApr)
+            # userdictMay = avgUser(userdictMay)
+            # userdictJun = avgUser(userdictJun)
             
-            userdata    = json.dumps(userdict)
-            userdataJan = json.dumps(userdictJan)
-            userdataFeb = json.dumps(userdictFeb)
-            userdataMar = json.dumps(userdictMar)
-            userdataApr = json.dumps(userdictApr)
-            userdataMay = json.dumps(userdictMay)
-            userdataJun = json.dumps(userdictJun)
+            # userdata    = json.dumps(userdict)
+            # userdataJan = json.dumps(userdictJan)
+            # userdataFeb = json.dumps(userdictFeb)
+            # userdataMar = json.dumps(userdictMar)
+            # userdataApr = json.dumps(userdictApr)
+            # userdataMay = json.dumps(userdictMay)
+            # userdataJun = json.dumps(userdictJun)
 
-            wf.write(userdata)
+            # wf.write(userdata)
+
+            # fJan = open('dataset_users_Jan.txt','w')
+            # fFeb = open('dataset_users_Feb.txt','w')
+            # fMar = open('dataset_users_Mar.txt','w')
+            # fApr = open('dataset_users_Apr.txt','w')
+            # fMay = open('dataset_users_May.txt','w')
+            # fJun = open('dataset_users_Jun.txt','w')
+
+            # fJan.write(userdataJan)
+            # fFeb.write(userdataFeb)
+            # fMar.write(userdataMar)
+            # fApr.write(userdataApr)
+            # fMay.write(userdataMay)
+            # fJun.write(userdataJun)
+
+            # fJan.close()
+            # fFeb.close()
+            # fMar.close()
+            # fApr.close()
+            # fMay.close()
+            # fJun.close()
+
+            userdictPy = avgUser(userdictPy)
+            userdictJs = avgUser(userdictJs)
+            userdictJv = avgUser(userdictJv)
+            userdictCp = avgUser(userdictCp)
+            userdictCc = avgUser(userdictCc)
+
+            userdataPy = json.dumps(userdictPy)
+            userdataJs = json.dumps(userdictJs)
+            userdataJv = json.dumps(userdictJv)
+            userdataCp = json.dumps(userdictCp)
+            userdataCc = json.dumps(userdictCc)
+
+            fPy = open('dataset_users_Py.txt','w')
+            fJs = open('dataset_users_Js.txt','w')
+            fJv = open('dataset_users_Jv.txt','w')
+            fCp = open('dataset_users_Cp.txt','w')
+            fCc = open('dataset_users_Cc.txt','w')
+
+            fPy.write(userdataPy)
+            fJs.write(userdataJs)
+            fJv.write(userdataJv)
+            fCp.write(userdataCp)
+            fCc.write(userdataCc)
+
+            fPy.close()
+            fJs.close()
+            fJv.close()
+            fCp.close()
+            fCc.close()
 
 
 if __name__ == '__main__':
